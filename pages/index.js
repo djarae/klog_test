@@ -69,8 +69,8 @@ function constructor(){
 
 
     return(<div>
-        <input type="text" onChange={(e) => trackQueryValue(e)} />
-        <button onClick={()=>search()}> Buscar </button>
+        <input className="txtCambio" type="text" onChange={(e) => trackQueryValue(e)} />
+        <button className="btnBuscar" onClick={()=>search()}> Buscar </button>
         <form>
           {jsonPics}
         </form>
