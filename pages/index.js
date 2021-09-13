@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import image1 from './pudin.png'; // Tell Webpack this JS file uses this image
 import React, { useState } from 'react';
+import image from 'next/image';
 
 const appid='_Jl6gLWuDaAEqEflNWlLMyV2ciicov_SWaZnUdB4lRY'
 const endpoint = 'https://api.unsplash.com/search/photos'
@@ -13,6 +14,8 @@ const endpoint = 'https://api.unsplash.com/search/photos'
 
 export default function Hello(){
   const [query, setQuery] = useState('');
+  const [jsonPics, setJsonPics] = useState([]);
+
 
 function constructor(){
 
@@ -24,8 +27,7 @@ function constructor(){
 
 
  function  search(){
-    console.log("query value")
-    console.log(query)
+    console.log("Entro a search")
 
     fetch(`${endpoint}?query=${query}&client_id=${appid}`)
     // fetch(`https://api.unsplash.com/search/photos?query=laptop&client_id=0BLshedrvRegOba2vyMWUuW3wrqMdWjCubQWpvMWgWI`)
@@ -33,11 +35,32 @@ function constructor(){
       return response.json()
     }).then(jsonResponse=>{
       console.log(jsonResponse)
+           //Renderizamos:
+           let itemsPics = []
+          for (let i=0;i<jsonResponse.results.length;i++) {
+           console.log("entro al renderizadod")
+            itemsPics.push(
+           <table>
+                    <tr>
+                        <td>
+                              <img src={jsonResponse.results[i].urls.thumb}/>
+                        </td>
+                    </tr>
+           </table>
+            )
+
+          }
+          setJsonPics(itemsPics)
     })
+
+    
+
+
+
   }
 
   function trackQueryValue(ev){
-     console.log("entro ")
+     console.log("entro a trackQueryValue ")
      setQuery(ev.target.value)  
     console.log(query)
   }
@@ -47,9 +70,18 @@ function constructor(){
 
     return(<div>
         <input type="text" onChange={(e) => trackQueryValue(e)} />
-        <button onClick={search()}> Buscar </button>
-      </div>)
-         
+        <button onClick={()=>search()}> Buscar </button>
+        <form>
+          {jsonPics}
+        </form>
+
+
+
+      </div>
+      
+      )
+
+     
 
 
 
